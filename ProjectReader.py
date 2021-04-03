@@ -26,10 +26,9 @@ def getGithubCommits(repo = "533-GithubProject", user = "redroach51"):
                         headers={"Authorization": token})
         commits.extend(commits_orig.json())
  
-    total_commits = len(commits)
     
 #   examineJSON(commits);
-    return len(commits);
+    return commits;
 
 def getGithubContributors(repo = "533-GithubProject", user = "redroach51"):
     
@@ -46,8 +45,21 @@ def getGithubContributors(repo = "533-GithubProject", user = "redroach51"):
     for contributor in contributors:
         contrib_list.append([contributor["login"],contributor["contributions"]])
 
-#   examineJSON(contributors)    
+#    examineJSON(contributors)    
     return contrib_list        
+
+def getCommitStatistics(commits):
+    
+#    examineJSON(commits[0])
+    
+    dates = [commits[0]["commit"]["author"]["date"],commits[-1]["commit"]["author"]["date"]]
+    dates[0] = datetime.strptime(dates[0],"%Y-%m-%dT%H:%M:%SZ")
+    dates[1] = datetime.strptime(dates[1],"%Y-%m-%dT%H:%M:%SZ")
+    length = len(commits)
+    
+    avg_date = (dates[0] - dates[1]) / length
+    print (avg_date)
+    return [length,avg_date]
 
 def getContributorStatistics(contributors):
     contrib_list = []
@@ -75,8 +87,9 @@ def main():
         user_name = "redroach51"
         user_repo = "533-GithubProject"
     commits = getGithubCommits(user_repo,user_name)
-    
-    print("\n" + user_repo + " Commits: " + str(commits) + "\n")
+    commits_stats = getCommitStatistics(commits)
+    print("\n{userRepo} Commits: {numCommits}".format(userRepo=user_repo, numCommits=commits_stats[0]))
+    print("Avg time between commits: " + str(commits_stats[1]) + "\n")
     
 
     contributors = getGithubContributors(user_repo,user_name)

@@ -7,7 +7,7 @@ A Python file is used to get the repositories from Github, calling Github reposi
 
 The measured statistics for each repository are:
 * [✓] Number of Commits
-* Average time between Commits
+* [✓] Average time between Commits
 * [✓] Number of Contributors
 * [✓] Number of Lurkers (< 10% of max contributor's commits)
 * Repository file size
