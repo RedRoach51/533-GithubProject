@@ -70,7 +70,6 @@ def getCommitStatistics(commits):
     length = len(commits)
     
     avg_date = (dates[0] - dates[1]) / length
-    print (avg_date)
     return [length,avg_date]
 
 def getContributorStatistics(contributors):
@@ -99,7 +98,6 @@ def getReleaseStatistics(releases):
     length = len(releases)
     
     avg_date = (dates[0] - dates[1]) / length
-    print (avg_date)
     return [length,avg_date]
 
 def examineJSON(json_object):
@@ -136,8 +134,8 @@ def main():
 
     releases = getGithubReleases(user_repo,user_name)
     releases_stats = getReleaseStatistics(releases);
-    print("\n{userRepo} Commits: {numReleases}".format(userRepo=user_repo, numReleases=releases_stats[0]))
-    print("Avg time between commits: " + str(releases_stats[1]) + "\n")
+    print("\n{userRepo} Releases: {numReleases}".format(userRepo=user_repo, numReleases=releases_stats[0]))
+    print("Avg time between releases: " + str(releases_stats[1]) + "\n")
 
     
 
