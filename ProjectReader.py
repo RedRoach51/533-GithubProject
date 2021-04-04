@@ -19,14 +19,12 @@ def getGithubCommits(repo = "533-GithubProject", user = "redroach51"):
                                     .format(user=user, repo=repo),
                                 headers={"Authorization": token})
     commits = commits_orig.json();
-
     
     while 'next' in commits_orig.links.keys():
         commits_orig = requests.get(commits_orig.links['next']['url'],
                         headers={"Authorization": token})
         commits.extend(commits_orig.json())
- 
-    
+     
 #   examineJSON(commits);
     return commits;
 
@@ -36,6 +34,7 @@ def getGithubContributors(repo = "533-GithubProject", user = "redroach51"):
                                     .format(user=user, repo=repo),
                                 headers={"Authorization": token})
     contributors = contrib_orig.json();
+
     while 'next' in contrib_orig.links.keys():
         contrib_orig = requests.get(contrib_orig.links['next']['url'],
                         headers = {"Authorization": token});
@@ -44,9 +43,16 @@ def getGithubContributors(repo = "533-GithubProject", user = "redroach51"):
     contrib_list = []
     for contributor in contributors:
         contrib_list.append([contributor["login"],contributor["contributions"]])
-
+        
 #    examineJSON(contributors)    
     return contrib_list        
+
+def getGithubRepo(repo = "533-GithubProject", user = "redroach51"):
+    repository = requests.get('https://api.github.com/repos/{user}/{repo}'
+                                    .format(user=user, repo=repo),
+                                headers={"Authorization": token})
+    return repository.json()
+    
 
 def getCommitStatistics(commits):
     
@@ -100,8 +106,13 @@ def main():
 #debug    for contributor in contributors:
 #        print('{contributor}: {contributions}'
 #                  .format(contributor=contributor[0], contributions=contributor[1]))
-    print("Total Lurkers (< 10% of {max_contribution}) : {lurker_count}"
+    print("Total Lurkers (< 10% of {max_contribution}) : {lurker_count}\n"
               .format(max_contribution = contributor_stats[2], lurker_count = contributor_stats[1]))
+    
+    repo = getGithubRepo(user_repo,user_name)
+    print("Repository Size (KB) : {repoSize}".format(repoSize=repo['size']))
+
+    
 
 if __name__ == '__main__':
     main()
