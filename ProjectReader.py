@@ -11,7 +11,7 @@ from dateutil.relativedelta import relativedelta
 #https://stackoverflow.com/questions/27931139/how-to-use-github-v3-api-to-get-commit-count-for-a-repo
 
 # Make sure to set your own GITHUBTOKEN env key!
-token = os.getenv('GITHUBTOKEN')
+token = "token " + os.getenv('GITHUBTOKEN')
 
 
 def getGithubCommits(repo = "533-GithubProject", user = "redroach51"):
@@ -114,8 +114,8 @@ def main():
 
     commits = getGithubCommits(user_repo,user_name)
     commits_stats = getCommitStatistics(commits)
-    print("\n{userRepo} Releases: {numCommits}".format(userRepo=user_repo, numCommits=commits_stats[0]))
-    print("Avg time between releases: " + str(commits_stats[1]) + "\n")
+    print("\n{userRepo} Commits: {numCommits}".format(userRepo=user_repo, numCommits=commits_stats[0]))
+    print("Avg time between commits: " + str(commits_stats[1]) + "\n")
     
 
     contributors = getGithubContributors(user_repo,user_name)
@@ -126,7 +126,7 @@ def main():
 #debug    for contributor in contributors:
 #        print('{contributor}: {contributions}'
 #                  .format(contributor=contributor[0], contributions=contributor[1]))
-    print("Total Lurkers (< 10% of {max_contribution}) : {lurker_count}\n"
+    print("Total Lurkers (< 10% * {max_contribution}) : {lurker_count}\n"
               .format(max_contribution = contributor_stats[2], lurker_count = contributor_stats[1]))
     
     repo = getGithubRepo(user_repo,user_name)
