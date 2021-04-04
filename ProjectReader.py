@@ -53,6 +53,12 @@ def getGithubRepo(repo = "533-GithubProject", user = "redroach51"):
                                 headers={"Authorization": token})
     return repository.json()
     
+def getGithubReleases(repo = "533-GithubProject", user = "redroach51"):
+    repository = requests.get('https://api.github.com/repos/{user}/{repo}/releases'
+                                    .format(user=user, repo=repo),
+                                headers={"Authorization": token})
+    return repository.json()
+
 
 def getCommitStatistics(commits):
     
@@ -81,6 +87,21 @@ def getContributorStatistics(contributors):
     
     return [len(contrib_list),lurker_count,max(contrib_list)]
 
+def getReleaseStatistics(releases):
+    
+#    examineJSON(releases)
+    if releases == []:
+        return ["0","N/A"]
+    
+    dates = [releases[0]["created_at"],releases[-1]["created_at"]]
+    dates[0] = datetime.strptime(dates[0],"%Y-%m-%dT%H:%M:%SZ")
+    dates[1] = datetime.strptime(dates[1],"%Y-%m-%dT%H:%M:%SZ")
+    length = len(releases)
+    
+    avg_date = (dates[0] - dates[1]) / length
+    print (avg_date)
+    return [length,avg_date]
+
 def examineJSON(json_object):
    with open('TempOutput.txt','w') as file:
        json.dump(json_object,file)
@@ -92,10 +113,11 @@ def main():
         print("Default test API set to creator RedRoach51's host repo.\n")
         user_name = "redroach51"
         user_repo = "533-GithubProject"
+
     commits = getGithubCommits(user_repo,user_name)
     commits_stats = getCommitStatistics(commits)
-    print("\n{userRepo} Commits: {numCommits}".format(userRepo=user_repo, numCommits=commits_stats[0]))
-    print("Avg time between commits: " + str(commits_stats[1]) + "\n")
+    print("\n{userRepo} Releases: {numCommits}".format(userRepo=user_repo, numCommits=commits_stats[0]))
+    print("Avg time between releases: " + str(commits_stats[1]) + "\n")
     
 
     contributors = getGithubContributors(user_repo,user_name)
@@ -111,6 +133,11 @@ def main():
     
     repo = getGithubRepo(user_repo,user_name)
     print("Repository Size (KB) : {repoSize}".format(repoSize=repo['size']))
+
+    releases = getGithubReleases(user_repo,user_name)
+    releases_stats = getReleaseStatistics(releases);
+    print("\n{userRepo} Commits: {numReleases}".format(userRepo=user_repo, numReleases=releases_stats[0]))
+    print("Avg time between commits: " + str(releases_stats[1]) + "\n")
 
     
 

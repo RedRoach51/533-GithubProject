@@ -11,5 +11,5 @@ The measured statistics for each repository are:
 * [✓] Number of Contributors
 * [✓] Number of Lurkers (< 10% of max contributor's commits)
 * [✓] Repository file size
-* Number of Repository releases
-* Average time between Repository releases
+* [✓] Number of Repository releases
+* [✓] Average time between Repository releases
